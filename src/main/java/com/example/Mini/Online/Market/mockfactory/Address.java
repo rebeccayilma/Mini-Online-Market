@@ -22,4 +22,12 @@ public class Address {
     private String street;
     private String city;
     private String state;
+
+    @Override
+    public String toString() {
+        return "Address: " +
+                "\nStreet: " + street + '\'' +
+                "\nCity='" + city + '\'' +
+                "\nState='" + state + '\'';
+    }
 }
