@@ -1,5 +1,6 @@
 package com.example.Mini.Online.Market.cart.controller;
 
+import com.example.Mini.Online.Market.cart.domain.CheckoutAddressDTO;
 import com.example.Mini.Online.Market.cart.domain.ProductDTO;
 import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
 import com.example.Mini.Online.Market.cart.service.ShoppingCartService;
@@ -49,6 +50,15 @@ public class CartController {
         //TODO: Mock user => Should come from the session
         User user = mockUser();
         ShoppingCart shoppingCart = shoppingCartService.removeFromCart(productId, user);
+        return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/checkout/address")
+    public ResponseEntity<?> addAddressToCart(@RequestBody CheckoutAddressDTO addressDTO) {
+        //TODO: Mock user => Should come from the session
+        User user = mockUser();
+        ShoppingCart shoppingCart = shoppingCartService.addAddressToCart(user,
+                addressDTO.getBillingId(), addressDTO.getBillingId());
         return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
 package com.example.Mini.Online.Market.cart.domain;
 
+import com.example.Mini.Online.Market.mockfactory.Address;
 import com.example.Mini.Online.Market.mockfactory.Product;
 import com.example.Mini.Online.Market.mockfactory.User;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,14 @@ public class ShoppingCart {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "cart_line_items", referencedColumnName = "id")
     private List<CartLine> cartLine;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "billing_address_id", referencedColumnName = "id", nullable = true)
+    private Address billingAddress;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "shipping_address_id", referencedColumnName = "id", nullable = true)
+    private Address shippingAddress;
 
     public void addToCart(Product product, int quantity) {
         if (cartLine != null) {

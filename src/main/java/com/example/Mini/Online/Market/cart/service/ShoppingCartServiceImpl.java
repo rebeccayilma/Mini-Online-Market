@@ -1,9 +1,12 @@
 package com.example.Mini.Online.Market.cart.service;
 
+import com.example.Mini.Online.Market.cart.domain.CheckoutAddressDTO;
 import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
 import com.example.Mini.Online.Market.cart.repository.ShoppingCartRepository;
+import com.example.Mini.Online.Market.mockfactory.Address;
 import com.example.Mini.Online.Market.mockfactory.Product;
 import com.example.Mini.Online.Market.mockfactory.User;
+import com.example.Mini.Online.Market.mockfactory.service.AddressService;
 import com.example.Mini.Online.Market.mockfactory.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    AddressService addressService;
 
     @Override
     public ShoppingCart addToCart(Long productId, int quantity, User user) {
@@ -77,5 +83,25 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public Optional<ShoppingCart> getCart(User user) {
         return shoppingCartRepository.findShoppingCartByUser(user);
+    }
+
+    @Override
+    public ShoppingCart addAddressToCart(User user, long billingId, long shippingId) {
+        Optional<ShoppingCart> shoppingCart = shoppingCartRepository.findShoppingCartByUser(user);
+        if (shoppingCart.isPresent()) {
+            Optional<Address> billingAddress = addressService.getOne(billingId);
+            Optional<Address> shippingAddress = addressService.getOne(shippingId);
+
+            if (billingAddress.isPresent() && shippingAddress.isPresent()) {
+                shoppingCart.get().setBillingAddress(billingAddress.get());
+                shoppingCart.get().setShippingAddress(shippingAddress.get());
+                return shoppingCartRepository.save(shoppingCart.get());
+            } else {
+                throw new NoSuchElementException("Address does not exist. Try again");
+            }
+
+        } else {
+            throw new NoSuchElementException("Cart does not exist. Try again");
+        }
     }
 }

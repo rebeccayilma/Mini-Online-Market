@@ -13,4 +13,6 @@ public interface ShoppingCartService {
     public Optional<ShoppingCart> checkoutCart(Long cartId, User user);
 
     public Optional<ShoppingCart> getCart(User user);
+
+    public ShoppingCart addAddressToCart(User user, long billingId, long shippingId);
 }
