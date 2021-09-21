@@ -28,7 +28,7 @@ public class User {
     private String email;
     @OneToOne
     private Role role;
-//    private Status status
+    private UserStatus status;
 //    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //    List<Order> orders;
 //    List<Adddress> adddresses;

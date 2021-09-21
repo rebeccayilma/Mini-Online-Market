@@ -25,6 +25,10 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtTokenUtil;
+    @PostMapping("/validate")
+    public boolean checkTokenValidity(@RequestBody String token){
+        return false;
+    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthneticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {

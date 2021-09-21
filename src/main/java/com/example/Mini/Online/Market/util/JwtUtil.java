@@ -6,21 +6,21 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    public static final long JWT_TOKEN_VALIDITY = 50*120;
 
-    private String secret = "topsecret";
+    private static final long serialVersionUID = -2550185165626007488L;
 
-    public String getUsernameFromToken(String token) {
+    public static final long JWT_TOKEN_VALIDITY = 5*60*60;  // this * by 1000 is 5 hours
 
-        return getClaimFromToken(token, Claims::getSubject);
-    }
+
+    private String secret = "secretsdfgdsfsdfgdfgsdfgdsfmiuisagoodpalcetolearnffasidjfsdkfjasdf";
+
+    public String getUsernameFromToken(String token) { return getClaimFromToken(token, Claims::getSubject); }
 
     public Date getIssuedAtDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getIssuedAt);
@@ -55,9 +55,9 @@ public class JwtUtil {
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
+    private String doGenerateToken(Map<String, Object> claims, String subject) { // this will create token
         // claims is what will be in the payload
-        // calling from the jwt library  Subject is the person being authenticated
+        // calling from the jwt library , Subject is the person being authenticated, we are passing the username as the subject
         return Jwts.builder()
                 .setClaims(claims).setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -74,3 +74,4 @@ public class JwtUtil {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
+
