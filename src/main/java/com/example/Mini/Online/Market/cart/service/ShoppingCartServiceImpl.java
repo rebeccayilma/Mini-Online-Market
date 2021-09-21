@@ -24,6 +24,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart addToCart(Long productId, int quantity, User user) {
         Optional<ShoppingCart> optionalCart = shoppingCartRepository.findShoppingCartByUser(user);
         Optional<Product> product = productService.getOne(productId);
+
+        if (!productService.isEnoughInStock(productId, quantity)) {
+            throw new NoSuchElementException("Not enough quantity in stock. Try again");
+        }
+
         if (product.isPresent()) {
             ShoppingCart shoppingCart = optionalCart.orElseGet(() -> createCart(user));
             shoppingCart.addToCart(product.get(), quantity);
@@ -34,26 +39,27 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void removeFromCart(Long cartId, Long productId, User user) {
-        Optional<Product> product = productService.getOne(productId);
-        if (product.isPresent()) {
-            Optional<ShoppingCart> cartOptional = shoppingCartRepository.findById(cartId);
-            if (cartOptional.isPresent()) {
-                ShoppingCart cart = cartOptional.get();
+    public ShoppingCart removeFromCart(Long productId, User user) {
+        Optional<ShoppingCart> userCart = shoppingCartRepository.findShoppingCartByUser(user);
+        if (userCart.isPresent()) {
+            Optional<Product> product = productService.getOne(productId);
+            if (product.isPresent()) {
+                ShoppingCart cart = userCart.get();
                 cart.removeFromCart(product.get());
-                shoppingCartRepository.save(cart);
+                return shoppingCartRepository.save(cart);
             } else {
-                throw new NoSuchElementException("Cart ID or Product not found. Try again");
+                throw new NoSuchElementException("Product not found. Try again");
             }
         } else {
-            throw new NoSuchElementException("Product not found. Try again");
+            throw new NoSuchElementException(user.getFirstName() + " does not have an existing cart. Try again");
         }
     }
 
     public ShoppingCart createCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
-        return shoppingCartRepository.save(shoppingCart);
+        ShoppingCart shoppingCart1 = shoppingCartRepository.save(shoppingCart);
+        shoppingCart1.setUser(user);
+        return shoppingCartRepository.save(shoppingCart1);
     }
 
     @Override

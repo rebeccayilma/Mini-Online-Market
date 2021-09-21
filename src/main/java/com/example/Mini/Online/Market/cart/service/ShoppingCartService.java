@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ShoppingCartService {
     public ShoppingCart addToCart(Long productId, int quantity, User user);
 
-    public void removeFromCart(Long cartId, Long productId, User user);
+    public ShoppingCart removeFromCart(Long productId, User user);
 
     public Optional<ShoppingCart> checkoutCart(Long cartId, User user);
 

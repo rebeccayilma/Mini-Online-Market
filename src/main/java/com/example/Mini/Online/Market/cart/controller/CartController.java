@@ -25,10 +25,9 @@ public class CartController {
 
     @PostMapping(value = "")
     public ResponseEntity<?> addToCart(@RequestBody ProductDTO productDto) {
-//        ResponseEntity responseEntity = productFeignClient.isEnoughInStock(productDto.getProductNumber(), quantity);
         User user = mockUser();
-        shoppingCartService.addToCart(productDto.getId(), productDto.getQuantity(), user);
-        return new ResponseEntity<>("Added to cart Successfully", HttpStatus.OK);
+        ShoppingCart shoppingCart = shoppingCartService.addToCart(productDto.getId(), productDto.getQuantity(), user);
+        return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
     }
 
     @PostMapping("/checkout/{cartId}")
@@ -44,12 +43,12 @@ public class CartController {
         }
     }
 
-    @PostMapping(value = "/remove/{cartId}/{productId}")
-    public ResponseEntity<?> removeFromCart(@PathVariable Long cartId, @PathVariable Long productId) {
+    @PostMapping(value = "/remove/{productId}")
+    public ResponseEntity<?> removeFromCart(@PathVariable Long productId) {
         //TODO: Mock user => Should come from the session
         User user = mockUser();
-        shoppingCartService.removeFromCart(cartId, productId, user);
-        return new ResponseEntity<>("Removed from cart Successfully", HttpStatus.OK);
+        ShoppingCart shoppingCart = shoppingCartService.removeFromCart(productId, user);
+        return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
     }
 
     public User mockUser() {

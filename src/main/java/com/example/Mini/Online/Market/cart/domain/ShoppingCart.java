@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,6 +38,8 @@ public class ShoppingCart {
                     return;
                 }
             }
+        } else {
+            cartLine = new ArrayList<>();
         }
 
         CartLine cline = new CartLine();

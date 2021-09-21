@@ -8,4 +8,5 @@ public interface ProductService {
     public List<Product> getAll();
     public void save(Product product);
     public Optional<Product> getOne(long id);
+    public boolean isEnoughInStock(long id, int quantity);
 }

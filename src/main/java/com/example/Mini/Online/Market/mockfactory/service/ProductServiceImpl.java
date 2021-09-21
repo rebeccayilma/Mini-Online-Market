@@ -5,7 +5,8 @@ import com.example.Mini.Online.Market.mockfactory.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -25,5 +26,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> getOne(long id) {
         return productRepository.findById(id);
+    }
+
+    @Override
+    public boolean isEnoughInStock(long id, int quantity) {
+        Optional<Product> product = productRepository.findById(id);
+        return product.filter(value -> value.getQuantity() >= quantity).isPresent();
     }
 }
