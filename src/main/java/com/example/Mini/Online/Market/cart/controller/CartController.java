@@ -32,8 +32,8 @@ public class CartController {
         return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
     }
 
-    @PostMapping("/checkout/{cartId}")
-    public ResponseEntity<?> checkoutCart(@PathVariable Long cartId) {
+    @PostMapping("/process/{cartId}")
+    public ResponseEntity<?> processPayment(@PathVariable Long cartId) {
         User user = mockUser();
         Optional<ShoppingCart> shoppingCart = shoppingCartService.checkoutCart(cartId, user);
         if (shoppingCart.isEmpty() || shoppingCart.get().getCartLine().isEmpty()) {
