@@ -17,9 +17,10 @@ public class CartController {
     @Autowired
     ShoppingCartService shoppingCartService;
 
-    @GetMapping("/{cartId}")
-    public ResponseEntity<?> getCart(@PathVariable Long cartId) {
-        Optional<ShoppingCart> cart = shoppingCartService.getCart(cartId);
+    @GetMapping()
+    public ResponseEntity<?> getCart() {
+        User user = mockUser();
+        Optional<ShoppingCart> cart = shoppingCartService.getCart(user);
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 

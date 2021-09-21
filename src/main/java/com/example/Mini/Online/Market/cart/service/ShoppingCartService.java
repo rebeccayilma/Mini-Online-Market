@@ -12,5 +12,5 @@ public interface ShoppingCartService {
 
     public Optional<ShoppingCart> checkoutCart(Long cartId, User user);
 
-    public Optional<ShoppingCart> getCart(Long cartId);
+    public Optional<ShoppingCart> getCart(User user);
 }

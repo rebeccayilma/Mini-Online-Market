@@ -75,7 +75,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public Optional<ShoppingCart> getCart(Long cartId) {
-        return shoppingCartRepository.findById(cartId);
+    public Optional<ShoppingCart> getCart(User user) {
+        return shoppingCartRepository.findShoppingCartByUser(user);
     }
 }
