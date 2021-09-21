@@ -21,13 +21,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     ProductService productService;
 
     @Override
-    public void addToCart(Long productId, int quantity, User user) {
+    public ShoppingCart addToCart(Long productId, int quantity, User user) {
         Optional<ShoppingCart> optionalCart = shoppingCartRepository.findShoppingCartByUser(user);
         Optional<Product> product = productService.getOne(productId);
         if (product.isPresent()) {
             ShoppingCart shoppingCart = optionalCart.orElseGet(() -> createCart(user));
             shoppingCart.addToCart(product.get(), quantity);
-            shoppingCartRepository.save(shoppingCart);
+            return shoppingCartRepository.save(shoppingCart);
         } else {
             throw new NoSuchElementException("Product not found. Try again");
         }

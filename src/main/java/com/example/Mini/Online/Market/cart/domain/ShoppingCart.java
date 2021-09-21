@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShoppingCart {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -30,12 +30,15 @@ public class ShoppingCart {
     private List<CartLine> cartLine;
 
     public void addToCart(Product product, int quantity) {
-        for (CartLine cline : cartLine) {
-            if (cline.getProduct().getId().equals(product.getId())) {
-                cline.setQuantity(cline.getQuantity() + quantity);
-                return;
+        if (cartLine != null) {
+            for (CartLine cline : cartLine) {
+                if (cline.getProduct().getId().equals(product.getId())) {
+                    cline.setQuantity(cline.getQuantity() + quantity);
+                    return;
+                }
             }
         }
+
         CartLine cline = new CartLine();
         cline.setProduct(product);
         cline.setQuantity(quantity);

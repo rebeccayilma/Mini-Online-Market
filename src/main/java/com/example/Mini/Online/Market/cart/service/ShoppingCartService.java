@@ -6,7 +6,7 @@ import com.example.Mini.Online.Market.mockfactory.User;
 import java.util.Optional;
 
 public interface ShoppingCartService {
-    public void addToCart(Long productId, int quantity, User user);
+    public ShoppingCart addToCart(Long productId, int quantity, User user);
 
     public void removeFromCart(Long cartId, Long productId, User user);
 

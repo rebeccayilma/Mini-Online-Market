@@ -28,8 +28,7 @@ public class CartController {
 //        ResponseEntity responseEntity = productFeignClient.isEnoughInStock(productDto.getProductNumber(), quantity);
         User user = mockUser();
         shoppingCartService.addToCart(productDto.getId(), productDto.getQuantity(), user);
-//        return new ResponseEntity<>("Added to cart Successfully", HttpStatus.OK);
-        return new ResponseEntity<>(productDto, HttpStatus.OK);
+        return new ResponseEntity<>("Added to cart Successfully", HttpStatus.OK);
     }
 
     @PostMapping("/checkout/{cartId}")
