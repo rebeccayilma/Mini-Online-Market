@@ -127,14 +127,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (shoppingCart.isPresent()) {
             Order order = OrderAdapter.parseCartToOrder(shoppingCart.get());
             orderService.save(order);
-            sendeEmail(order);
+            sendEmail(order);
             return order;
         } else {
             throw new EntityNotFoundException("Cart ID not found. Try again");
         }
     }
 
-    private void sendeEmail(Order order) {
+    private void sendEmail(Order order) {
         try {
             emailService.orderPlacementEmail(order);
         } catch (SparkPostException ex) {
