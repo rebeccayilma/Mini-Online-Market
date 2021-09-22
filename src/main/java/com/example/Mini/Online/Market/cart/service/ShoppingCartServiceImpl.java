@@ -44,7 +44,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Optional<ShoppingCart> optionalCart = shoppingCartRepository.findShoppingCartByUser(user);
         Optional<Product> product = productService.findById(productId);
         ShoppingCart shoppingCart = optionalCart.orElseGet(() -> createCart(user));
-
         return processAddToCart(quantity, product, shoppingCart);
     }
 
@@ -61,25 +60,26 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             }
 
             if (cartLine == null) {
-                initializeAddCartFromEmpty(quantity, product, shoppingCart);
+                return initializeAddCartFromEmpty(quantity, product, shoppingCart);
             } else {
                 if (product.get().getQuantity() >= (cartLine.getQuantity() + quantity)) {
                     shoppingCart.addToCart(product.get(), quantity);
                 }
+                return shoppingCartRepository.save(shoppingCart);
             }
-            return shoppingCartRepository.save(shoppingCart);
         } else {
             throw new NoSuchElementException("Product not found. Try again");
         }
     }
 
-    private void initializeAddCartFromEmpty(int quantity, Optional<Product> product, ShoppingCart shoppingCart) {
+    private ShoppingCart initializeAddCartFromEmpty(int quantity, Optional<Product> product, ShoppingCart shoppingCart) {
         ArrayList<CartLine> cartLineList = new ArrayList<>();
         CartLine newCart = new CartLine();
         newCart.setQuantity(quantity);
         newCart.setProduct(product.get());
         cartLineList.add(newCart);
         shoppingCart.setCartLine(cartLineList);
+        return shoppingCartRepository.save(shoppingCart);
     }
 
     @Override
@@ -89,8 +89,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             Optional<Product> product = productService.findById(productId);
             if (product.isPresent()) {
                 ShoppingCart cart = userCart.get();
-                cart.removeFromCart(product.get());
-                return shoppingCartRepository.save(cart);
+                if (cart.getCartLine() != null) {
+                    cart.removeFromCart(product.get());
+                    return shoppingCartRepository.save(cart);
+                } else {
+                    throw new NoSuchElementException("No cart not found. Try again");
+                }
             } else {
                 throw new NoSuchElementException("Product not found. Try again");
             }
@@ -116,23 +120,25 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         -validate payments
         -create order through adapter => done
         -send out email to user => done
-        -return order
+        -return order => done
          */
 
 
         if (shoppingCart.isPresent()) {
             Order order = OrderAdapter.parseCartToOrder(shoppingCart.get());
             orderService.save(order);
-            //send email
-            try {
-                emailService.orderPlacementEmail(order);
-            } catch (SparkPostException ex) {
-                System.out.println(ex);
-            }
-
+            sendeEmail(order);
             return order;
         } else {
             throw new NoSuchElementException("Cart ID not found. Try again");
+        }
+    }
+
+    private void sendeEmail(Order order) {
+        try {
+            emailService.orderPlacementEmail(order);
+        } catch (SparkPostException ex) {
+            System.out.println(ex);
         }
     }
 

@@ -25,8 +25,8 @@ public class OrderAdapter {
             product.setQuantity(cart.getCartLine().get(i).getProduct().getQuantity());
             product.setPrice(cart.getCartLine().get(i).getProduct().getPrice());
             product.setQuantity(cart.getCartLine().get(i).getProduct().getQuantity());
+            product.setName(cart.getCartLine().get(i).getProduct().getName());
             orderLine.setProduct(product);
-
             newLines.add(orderLine);
         }
 

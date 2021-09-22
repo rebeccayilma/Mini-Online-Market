@@ -4,8 +4,6 @@ import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.orders.domain.OrderUpdateDTO;
 import com.example.Mini.Online.Market.orders.service.OrderService;
-import com.example.Mini.Online.Market.service.MyUserDetails;
-import com.example.Mini.Online.Market.service.MyUserDetailsService;
 import com.example.Mini.Online.Market.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,9 +25,14 @@ public class OrderController {
     UserService userService;
 
     @GetMapping("")
-    public ResponseEntity<?> getAllOrders() {
-        List<Order> orders = orderService.getAllOrders();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+    public ResponseEntity<?> getAllOrders(Authentication authentication) {
+        Optional<User> userOptional = userService.getAuthenticatedUser(authentication);
+        if (userOptional.isPresent()) {
+            List<Order> orders = orderService.getAllOrders();
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User not authorized", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/history")
@@ -44,14 +47,27 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<?> getOrderById(@PathVariable long orderId) {
-        Optional<Order> order = orderService.getOne(orderId);
-        return new ResponseEntity<>(order, HttpStatus.OK);
+    public ResponseEntity<?> getOrderById(@PathVariable long orderId,Authentication authentication) {
+        Optional<User> userOptional = userService.getAuthenticatedUser(authentication);
+        if (userOptional.isPresent()) {
+            Optional<Order> order = orderService.getOne(orderId);
+            return new ResponseEntity<>(order, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User not authorized", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PostMapping("/{orderId}/status")
-    public ResponseEntity<?> updateOrderStatus(@PathVariable long orderId, @RequestBody OrderUpdateDTO orderDTO) {
-        Order order = orderService.updateOrderStatus(orderId, orderDTO.getOrderStatus());
-        return new ResponseEntity<>(order, HttpStatus.OK);
+    public ResponseEntity<?> updateOrderStatus(@PathVariable long orderId,
+                                               @RequestBody OrderUpdateDTO orderDTO,
+                                               Authentication authentication) {
+
+        Optional<User> userOptional = userService.getAuthenticatedUser(authentication);
+        if (userOptional.isPresent()) {
+            Order order = orderService.updateOrderStatus(orderId, orderDTO.getOrderStatus());
+            return new ResponseEntity<>(order, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User not authorized", HttpStatus.UNAUTHORIZED);
+        }
     }
 }
