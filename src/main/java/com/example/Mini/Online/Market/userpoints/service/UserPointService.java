@@ -13,4 +13,6 @@ public interface UserPointService {
     void decrementPoints(User user, int points);
 
     List<UserPoint> getAll();
+
+    UserPoint getUserPoints(long userId);
 }

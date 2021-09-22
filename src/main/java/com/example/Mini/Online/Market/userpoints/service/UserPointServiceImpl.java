@@ -51,4 +51,22 @@ public class UserPointServiceImpl implements UserPointService {
     public List<UserPoint> getAll() {
         return userPointRepository.findAll();
     }
+
+    @Override
+    public UserPoint getUserPoints(long userId) {
+        User user = mockUser();
+        Optional<UserPoint> userPointOptional = userPointRepository.findUserPointByUser(user);
+        if (userPointOptional.isPresent()){
+            return userPointOptional.get();
+        } else {
+            UserPoint userPoint = new UserPoint();
+            userPoint.setUser(user);
+            userPoint.setPoints(0);
+            return userPointRepository.save(userPoint);
+        }
+    }
+
+    public User mockUser() {
+        return new User(1L, "Johnstone", "Ananda", "johnolwamba@gmail.com");
+    }
 }
