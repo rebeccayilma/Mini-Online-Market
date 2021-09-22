@@ -1,10 +1,10 @@
 package com.example.Mini.Online.Market.service;
 
 import com.example.Mini.Online.Market.domain.User;
-import com.example.Mini.Online.Market.domain.UserStatus;
 import com.example.Mini.Online.Market.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,6 +18,11 @@ public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+
+
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
@@ -30,6 +35,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 

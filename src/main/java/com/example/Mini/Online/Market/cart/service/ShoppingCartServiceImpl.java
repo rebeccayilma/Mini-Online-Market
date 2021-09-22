@@ -43,14 +43,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         if (!productService.isEnoughInStock(productId, quantity)) {
             throw new NoSuchElementException("Not enough quantity in stock. Try again");
-        }
-
-        if (product.isPresent()) {
-            ShoppingCart shoppingCart = optionalCart.orElseGet(() -> createCart(user));
-            shoppingCart.addToCart(product.get(), quantity);
-            return shoppingCartRepository.save(shoppingCart);
         } else {
-            throw new NoSuchElementException("Product not found. Try again");
+            if (product.isPresent()) {
+                ShoppingCart shoppingCart = optionalCart.orElseGet(() -> createCart(user));
+                shoppingCart.addToCart(product.get(), quantity);
+                return shoppingCartRepository.save(shoppingCart);
+            } else {
+                throw new NoSuchElementException("Product not found. Try again");
+            }
         }
     }
 
@@ -96,9 +96,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             Order order = OrderAdapter.parseCartToOrder(shoppingCart.get());
             orderService.save(order);
             //send email
-            try{
+            try {
                 emailService.orderPlacementEmail(order);
-            } catch (SparkPostException ex){
+            } catch (SparkPostException ex) {
                 System.out.println(ex);
             }
 
