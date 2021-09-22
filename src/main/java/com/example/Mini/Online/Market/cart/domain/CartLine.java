@@ -15,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class CartLine {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     int quantity;
 

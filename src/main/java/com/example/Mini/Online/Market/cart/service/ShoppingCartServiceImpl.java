@@ -7,15 +7,16 @@ import com.example.Mini.Online.Market.domain.Address;
 import com.example.Mini.Online.Market.domain.Product;
 import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.email.EmailService;
-import com.example.Mini.Online.Market.service.AddressService;
 import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.orders.domain.OrderAdapter;
 import com.example.Mini.Online.Market.orders.service.OrderService;
+import com.example.Mini.Online.Market.service.AddressService;
 import com.example.Mini.Online.Market.service.ProductService;
 import com.sparkpost.exception.SparkPostException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
@@ -43,23 +44,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Optional<ShoppingCart> optionalCart = shoppingCartRepository.findShoppingCartByUser(user);
         Optional<Product> product = productService.findById(productId);
         ShoppingCart shoppingCart = optionalCart.orElseGet(() -> createCart(user));
-        if (!isStockValid(shoppingCart, product, quantity)) {
-            throw new NoSuchElementException("Not enough quantity in stock. Try again");
-        } else {
-            if (product.isPresent()) {
-                shoppingCart.addToCart(product.get(), quantity);
-                return shoppingCartRepository.save(shoppingCart);
-            } else {
-                throw new NoSuchElementException("Product not found. Try again");
-            }
-        }
+
+        return processAddToCart(quantity, product, shoppingCart);
     }
 
-    private boolean isStockValid(ShoppingCart cart, Optional<Product> product, int quantity) {
+    private ShoppingCart processAddToCart(int quantity, Optional<Product> product, ShoppingCart shoppingCart) {
         if (product.isPresent()) {
             CartLine cartLine = null;
-            if (cart.getCartLine() != null) {
-                for (CartLine cLine : cart.getCartLine()) {
+            if (shoppingCart.getCartLine() != null) {
+                for (CartLine cLine : shoppingCart.getCartLine()) {
                     if (Objects.equals(cLine.getProduct().getId(), product.get().getId())) {
                         cartLine = cLine;
                         break;
@@ -67,11 +60,26 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 }
             }
 
-            if (cartLine == null) return false;
-            return productService.isEnoughInStock(product.get().getId(), cartLine.getQuantity() + quantity);
+            if (cartLine == null) {
+                initializeAddCartFromEmpty(quantity, product, shoppingCart);
+            } else {
+                if (product.get().getQuantity() >= (cartLine.getQuantity() + quantity)) {
+                    shoppingCart.addToCart(product.get(), quantity);
+                }
+            }
+            return shoppingCartRepository.save(shoppingCart);
         } else {
-            return false;
+            throw new NoSuchElementException("Product not found. Try again");
         }
+    }
+
+    private void initializeAddCartFromEmpty(int quantity, Optional<Product> product, ShoppingCart shoppingCart) {
+        ArrayList<CartLine> cartLineList = new ArrayList<>();
+        CartLine newCart = new CartLine();
+        newCart.setQuantity(quantity);
+        newCart.setProduct(product.get());
+        cartLineList.add(newCart);
+        shoppingCart.setCartLine(cartLineList);
     }
 
     @Override
@@ -106,8 +114,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         //TODO:
         /*
         -validate payments
-        -create order through adapter
-        -send out email to user
+        -create order through adapter => done
+        -send out email to user => done
         -return order
          */
 
