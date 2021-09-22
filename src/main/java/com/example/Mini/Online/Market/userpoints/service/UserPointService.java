@@ -14,5 +14,5 @@ public interface UserPointService {
 
     List<UserPoint> getAll();
 
-    UserPoint getUserPoints(long userId);
+    public UserPoint getUserPoints(User user);
 }

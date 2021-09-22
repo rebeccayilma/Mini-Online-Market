@@ -4,12 +4,17 @@ import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.orders.domain.OrderUpdateDTO;
 import com.example.Mini.Online.Market.orders.service.OrderService;
+import com.example.Mini.Online.Market.service.MyUserDetails;
+import com.example.Mini.Online.Market.service.MyUserDetailsService;
+import com.example.Mini.Online.Market.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
@@ -18,6 +23,9 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("")
     public ResponseEntity<?> getAllOrders() {
         List<Order> orders = orderService.getAllOrders();
@@ -25,10 +33,14 @@ public class OrderController {
     }
 
     @GetMapping("/history")
-    public ResponseEntity<?> getOrderHistory() {
-        User user = SecurityHelper.getLoggedInUser();
-        List<Order> ordersHistory = orderService.getOrderHistory(user);
-        return new ResponseEntity<>(ordersHistory, HttpStatus.OK);
+    public ResponseEntity<?> getOrderHistory(Authentication authentication) {
+        Optional<User> userOptional = userService.getAuthenticatedUser(authentication);
+        if (userOptional.isPresent()) {
+            List<Order> ordersHistory = orderService.getOrderHistory(userOptional.get());
+            return new ResponseEntity<>(ordersHistory, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User not authorized", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/{orderId}")

@@ -53,8 +53,7 @@ public class UserPointServiceImpl implements UserPointService {
     }
 
     @Override
-    public UserPoint getUserPoints(long userId) {
-        User user = SecurityHelper.getLoggedInUser();
+    public UserPoint getUserPoints(User user) {
         Optional<UserPoint> userPointOptional = userPointRepository.findUserPointByUser(user);
         if (userPointOptional.isPresent()){
             return userPointOptional.get();

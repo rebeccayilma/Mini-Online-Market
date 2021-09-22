@@ -4,6 +4,7 @@ import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.domain.UserStatus;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
