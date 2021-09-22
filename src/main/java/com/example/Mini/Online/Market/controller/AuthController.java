@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-@CrossOrigin
 @RestController
+@CrossOrigin(origins = { "http://localhost:3000"})
 public class AuthController {
     @Autowired
     UserDetailsService userDetailsService;
