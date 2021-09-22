@@ -1,10 +1,9 @@
 package com.example.Mini.Online.Market.service;
 
-import miniOnlineMarket.domain.Product;
-import miniOnlineMarket.domain.Review;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.Mini.Online.Market.domain.Review;
+
+import java.util.*;
 
 public interface ReviewService {
 

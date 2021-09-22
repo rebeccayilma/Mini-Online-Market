@@ -1,8 +1,7 @@
 package com.example.Mini.Online.Market.controller;
 
-import miniOnlineMarket.domain.Product;
-import miniOnlineMarket.domain.Review;
-import miniOnlineMarket.service.ReviewService;
+import com.example.Mini.Online.Market.domain.Review;
+import com.example.Mini.Online.Market.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

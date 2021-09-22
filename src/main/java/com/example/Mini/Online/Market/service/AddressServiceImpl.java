@@ -1,7 +1,7 @@
-package com.example.Mini.Online.Market.mockfactory.service;
+package com.example.Mini.Online.Market.service;
 
-import com.example.Mini.Online.Market.mockfactory.Address;
-import com.example.Mini.Online.Market.mockfactory.repository.AddressRepository;
+import com.example.Mini.Online.Market.domain.Address;
+import com.example.Mini.Online.Market.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

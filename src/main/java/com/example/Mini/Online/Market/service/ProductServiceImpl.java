@@ -1,9 +1,8 @@
 package com.example.Mini.Online.Market.service;
 
-import miniOnlineMarket.domain.Product;
-import miniOnlineMarket.domain.Review;
-import miniOnlineMarket.repository.ProductRepository;
-import miniOnlineMarket.repository.ReviewRepository;
+import com.example.Mini.Online.Market.domain.Product;
+import com.example.Mini.Online.Market.repository.ProductRepository;
+import com.example.Mini.Online.Market.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +48,19 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void deleteById(long id) {
          productRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean isEnoughInStock(long id, int quantity) {
+        Optional<Product> product = productRepository.findById(id);
+        System.out.println("*********");
+        System.out.println(product.get());
+        System.out.println(quantity);
+        if (product.isPresent()){
+            return product.get().getQuantity() >= quantity;
+        } else {
+            return false;
+        }
     }
 
 //    @Override

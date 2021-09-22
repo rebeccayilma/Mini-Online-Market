@@ -1,15 +1,13 @@
 package com.example.Mini.Online.Market.repository;
 
-import miniOnlineMarket.domain.Product;
-import miniOnlineMarket.domain.Review;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.Mini.Online.Market.domain.Review;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends CrudRepository<Review, Long> {
 //    List<Review> findAllByProduct(Optional<Product> product);
-
+    public List<Review> findAll();
 }

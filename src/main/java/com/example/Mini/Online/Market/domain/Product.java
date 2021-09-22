@@ -4,22 +4,36 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
-
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
-    private long id;
-    private String name;
-    private String description;
-    private String price;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-//    private Seller seller;
+    private String name;
+    private Double price;
+    private Integer quantity;
+    private String description;
+
+    //    private Seller seller;
 //
 //    private List<Order> orderlist;
 //
 //    private List<Review> review;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

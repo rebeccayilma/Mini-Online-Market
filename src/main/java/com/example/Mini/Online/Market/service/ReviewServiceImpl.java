@@ -1,8 +1,7 @@
 package com.example.Mini.Online.Market.service;
 
-import miniOnlineMarket.domain.Product;
-import miniOnlineMarket.domain.Review;
-import miniOnlineMarket.repository.ReviewRepository;
+import com.example.Mini.Online.Market.domain.Review;
+import com.example.Mini.Online.Market.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

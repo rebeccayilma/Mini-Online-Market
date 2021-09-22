@@ -1,8 +1,7 @@
 package com.example.Mini.Online.Market.controller;
 
-import miniOnlineMarket.domain.Product;
-import miniOnlineMarket.domain.Review;
-import miniOnlineMarket.service.ProductService;
+import com.example.Mini.Online.Market.domain.Product;
+import com.example.Mini.Online.Market.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,5 +45,4 @@ public class ProductController {
 //    public List<Review> getReviewsOfProduct(@PathVariable long id){
 //        return productService.getProductReview(id);
 //    }
-
 }

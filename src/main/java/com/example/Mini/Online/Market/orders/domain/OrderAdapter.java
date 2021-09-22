@@ -1,7 +1,7 @@
 package com.example.Mini.Online.Market.orders.domain;
 
 import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
-import com.example.Mini.Online.Market.mockfactory.Product;
+import com.example.Mini.Online.Market.domain.Product;
 
 import java.sql.Date;
 import java.util.ArrayList;

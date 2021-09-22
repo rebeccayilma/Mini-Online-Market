@@ -1,6 +1,6 @@
-package com.example.Mini.Online.Market.mockfactory.repository;
+package com.example.Mini.Online.Market.repository;
 
-import com.example.Mini.Online.Market.mockfactory.Address;
+import com.example.Mini.Online.Market.domain.Address;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -3,15 +3,15 @@ package com.example.Mini.Online.Market.cart.service;
 import com.example.Mini.Online.Market.cart.domain.CartLine;
 import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
 import com.example.Mini.Online.Market.cart.repository.ShoppingCartRepository;
+import com.example.Mini.Online.Market.domain.Address;
+import com.example.Mini.Online.Market.domain.Product;
 import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.email.EmailService;
-import com.example.Mini.Online.Market.mockfactory.Address;
-import com.example.Mini.Online.Market.mockfactory.Product;
-import com.example.Mini.Online.Market.mockfactory.service.AddressService;
-import com.example.Mini.Online.Market.mockfactory.service.ProductService;
+import com.example.Mini.Online.Market.service.AddressService;
 import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.orders.domain.OrderAdapter;
 import com.example.Mini.Online.Market.orders.service.OrderService;
+import com.example.Mini.Online.Market.service.ProductService;
 import com.sparkpost.exception.SparkPostException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart addToCart(Long productId, int quantity, User user) {
         Optional<ShoppingCart> optionalCart = shoppingCartRepository.findShoppingCartByUser(user);
-        Optional<Product> product = productService.getOne(productId);
+        Optional<Product> product = productService.findById(productId);
         ShoppingCart shoppingCart = optionalCart.orElseGet(() -> createCart(user));
         if (!isStockValid(shoppingCart, product, quantity)) {
             throw new NoSuchElementException("Not enough quantity in stock. Try again");
@@ -78,7 +78,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart removeFromCart(Long productId, User user) {
         Optional<ShoppingCart> userCart = shoppingCartRepository.findShoppingCartByUser(user);
         if (userCart.isPresent()) {
-            Optional<Product> product = productService.getOne(productId);
+            Optional<Product> product = productService.findById(productId);
             if (product.isPresent()) {
                 ShoppingCart cart = userCart.get();
                 cart.removeFromCart(product.get());
