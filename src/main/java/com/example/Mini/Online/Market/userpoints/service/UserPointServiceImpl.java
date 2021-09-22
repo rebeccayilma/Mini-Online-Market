@@ -6,6 +6,7 @@ import com.example.Mini.Online.Market.userpoints.repository.UserPointRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,5 +45,10 @@ public class UserPointServiceImpl implements UserPointService {
             }
             userPointRepository.save(userPoint.get());
         }
+    }
+
+    @Override
+    public List<UserPoint> getAll() {
+        return userPointRepository.findAll();
     }
 }

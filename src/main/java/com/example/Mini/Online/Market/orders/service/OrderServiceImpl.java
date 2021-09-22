@@ -1,9 +1,12 @@
 package com.example.Mini.Online.Market.orders.service;
 
+import com.example.Mini.Online.Market.email.EmailService;
 import com.example.Mini.Online.Market.mockfactory.User;
 import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.orders.domain.OrderStatus;
 import com.example.Mini.Online.Market.orders.repository.OrderRepository;
+import com.example.Mini.Online.Market.userpoints.service.UserPointService;
+import com.sparkpost.exception.SparkPostException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +17,16 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    final static Integer POINTS_AWARDED = 10;
+
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    UserPointService userPointService;
+
+    @Autowired
+    EmailService emailService;
 
     @Override
     public Optional<Order> getOne(long id) {
@@ -39,10 +50,14 @@ public class OrderServiceImpl implements OrderService {
             if (isOrderStatusValid(orderStatus)) {
                 order.get().setOrderStatus(OrderStatus.values()[orderStatus]);
                 if (isOrderDelivered(orderStatus)) {
-                    //handle order delivered => award points
-                } else {
-                    //send order in progress email
+                    userPointService.incrementPoints(order.get().getUser(), POINTS_AWARDED);
                 }
+                try {
+                    emailService.orderStatusUpdate(order.get(), (OrderStatus.values()[orderStatus]).name());
+                } catch (SparkPostException exception) {
+                    System.out.println(exception);
+                }
+
                 return orderRepository.save(order.get());
             } else {
                 throw new NoSuchElementException("Order status not found. Try again");

@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
+    private static final String API_KEY = "82f6578a134744f2bfe1308a8332b1957272106e";
+    Client client = new Client(API_KEY);
+
     @Async
     public void orderPlacementEmail(Order order) throws SparkPostException {
-        String API_KEY = "82f6578a134744f2bfe1308a8332b1957272106e";
-        Client client = new Client(API_KEY);
-
         client.sendMessage(
                 "johnolwamba@wrostdevelopers.com",
                 order.getUser().getEmail(),
@@ -28,6 +28,20 @@ public class EmailService {
                         "<p>Shipping Address: " + order.getShippingAddress().getStreet() + "," +
                         ", " + order.getShippingAddress().getCity() + ", " +
                         order.getShippingAddress().getState() + "</p>" +
+                        "</div>");
+
+    }
+
+    @Async
+    public void orderStatusUpdate(Order order, String orderStatus) throws SparkPostException {
+        client.sendMessage(
+                "johnolwamba@wrostdevelopers.com",
+                order.getUser().getEmail(),
+                "Your order status update.",
+                "There is an new status for order # " + order.getId(),
+                "<div>" +
+                        "<p>There is an new status for order # " + order.getId() + "</p>"+
+                        "<p>Your order status is now: <b>" + orderStatus + "</b></p>" +
                         "</div>");
 
     }
