@@ -12,12 +12,12 @@ import com.example.Mini.Online.Market.orders.domain.OrderAdapter;
 import com.example.Mini.Online.Market.orders.service.OrderService;
 import com.example.Mini.Online.Market.service.AddressService;
 import com.example.Mini.Online.Market.service.ProductService;
+import com.example.Mini.Online.Market.util.exeptionhandler.EntityNotFoundException;
 import com.sparkpost.exception.SparkPostException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -68,7 +68,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 return shoppingCartRepository.save(shoppingCart);
             }
         } else {
-            throw new NoSuchElementException("Product not found. Try again");
+            throw new EntityNotFoundException("Product not found. Try again");
         }
     }
 
@@ -93,13 +93,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     cart.removeFromCart(product.get());
                     return shoppingCartRepository.save(cart);
                 } else {
-                    throw new NoSuchElementException("No cart not found. Try again");
+                    throw new EntityNotFoundException("No cart not found. Try again");
                 }
             } else {
-                throw new NoSuchElementException("Product not found. Try again");
+                throw new EntityNotFoundException("Product not found. Try again");
             }
         } else {
-            throw new NoSuchElementException(user.getName() + " does not have an existing cart. Try again");
+            throw new EntityNotFoundException(user.getName() + " does not have an existing cart. Try again");
         }
     }
 
@@ -130,7 +130,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             sendeEmail(order);
             return order;
         } else {
-            throw new NoSuchElementException("Cart ID not found. Try again");
+            throw new EntityNotFoundException("Cart ID not found. Try again");
         }
     }
 
@@ -159,11 +159,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 shoppingCart.get().setShippingAddress(shippingAddress.get());
                 return shoppingCartRepository.save(shoppingCart.get());
             } else {
-                throw new NoSuchElementException("Address does not exist. Try again");
+                throw new EntityNotFoundException("Address does not exist. Try again");
             }
 
         } else {
-            throw new NoSuchElementException("Cart does not exist. Try again");
+            throw new EntityNotFoundException("Cart does not exist. Try again");
         }
     }
 }

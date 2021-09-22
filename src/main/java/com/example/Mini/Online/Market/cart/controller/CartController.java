@@ -7,6 +7,7 @@ import com.example.Mini.Online.Market.cart.service.ShoppingCartService;
 import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.service.UserService;
+import com.example.Mini.Online.Market.util.exeptionhandler.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,7 +65,8 @@ public class CartController {
     }
 
     @PostMapping(value = "/remove/{productId}")
-    public ResponseEntity<?> removeFromCart(@PathVariable Long productId, Authentication authentication) {
+    public ResponseEntity<?> removeFromCart(@PathVariable Long productId,
+                                            Authentication authentication) throws EntityNotFoundException {
         Optional<User> userOptional = userService.getAuthenticatedUser(authentication);
         if (userOptional.isPresent()) {
             ShoppingCart shoppingCart = shoppingCartService.removeFromCart(productId, userOptional.get());

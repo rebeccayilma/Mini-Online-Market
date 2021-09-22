@@ -6,12 +6,12 @@ import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.orders.domain.OrderStatus;
 import com.example.Mini.Online.Market.orders.repository.OrderRepository;
 import com.example.Mini.Online.Market.userpoints.service.UserPointService;
+import com.example.Mini.Online.Market.util.exeptionhandler.EntityNotFoundException;
 import com.sparkpost.exception.SparkPostException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -60,10 +60,10 @@ public class OrderServiceImpl implements OrderService {
 
                 return orderRepository.save(order.get());
             } else {
-                throw new NoSuchElementException("Order status not found. Try again");
+                throw new EntityNotFoundException("Order status not found. Try again");
             }
         } else {
-            throw new NoSuchElementException("Order not found. Try again");
+            throw new EntityNotFoundException("Order not found. Try again");
         }
     }
 
