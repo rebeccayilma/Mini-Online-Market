@@ -1,7 +1,9 @@
 package com.example.Mini.Online.Market.controller;
 
+import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.domain.authDTO.AuthenticationRequest;
 import com.example.Mini.Online.Market.domain.authDTO.AuthenticationResponse;
+import com.example.Mini.Online.Market.service.UserService;
 import com.example.Mini.Online.Market.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @CrossOrigin
 @RestController
 public class AuthController {
@@ -23,7 +27,8 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
+    @Autowired
+    UserService userService;
 
     @Autowired
     private JwtUtil jwtTokenUtil;
@@ -46,8 +51,8 @@ public class AuthController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        Optional<User> userOptional = userService.findByUsername(authenticationRequest.getUsername());
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, userOptional.orElse(null)));
     }
 
 }
