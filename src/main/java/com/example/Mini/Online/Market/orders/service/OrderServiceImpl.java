@@ -1,7 +1,7 @@
 package com.example.Mini.Online.Market.orders.service;
 
+import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.email.EmailService;
-import com.example.Mini.Online.Market.mockfactory.User;
 import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.orders.domain.OrderStatus;
 import com.example.Mini.Online.Market.orders.repository.OrderRepository;

@@ -2,10 +2,10 @@ package com.example.Mini.Online.Market.cart.service;
 
 import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
 import com.example.Mini.Online.Market.cart.repository.ShoppingCartRepository;
+import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.email.EmailService;
 import com.example.Mini.Online.Market.mockfactory.Address;
 import com.example.Mini.Online.Market.mockfactory.Product;
-import com.example.Mini.Online.Market.mockfactory.User;
 import com.example.Mini.Online.Market.mockfactory.service.AddressService;
 import com.example.Mini.Online.Market.mockfactory.service.ProductService;
 import com.example.Mini.Online.Market.orders.domain.Order;
@@ -67,7 +67,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 throw new NoSuchElementException("Product not found. Try again");
             }
         } else {
-            throw new NoSuchElementException(user.getFirstName() + " does not have an existing cart. Try again");
+            throw new NoSuchElementException(user.getName() + " does not have an existing cart. Try again");
         }
     }
 

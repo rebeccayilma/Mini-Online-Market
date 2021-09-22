@@ -1,7 +1,7 @@
 package com.example.Mini.Online.Market.cart.repository;
 
 import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
-import com.example.Mini.Online.Market.mockfactory.User;
+import com.example.Mini.Online.Market.domain.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

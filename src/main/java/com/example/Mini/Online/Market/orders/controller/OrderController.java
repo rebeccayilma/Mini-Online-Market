@@ -1,9 +1,7 @@
 package com.example.Mini.Online.Market.orders.controller;
 
-import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
-import com.example.Mini.Online.Market.mockfactory.User;
+import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.orders.domain.Order;
-import com.example.Mini.Online.Market.orders.domain.OrderStatus;
 import com.example.Mini.Online.Market.orders.domain.OrderUpdateDTO;
 import com.example.Mini.Online.Market.orders.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.example.Mini.Online.Market.userpoints.domain;
 
-import com.example.Mini.Online.Market.mockfactory.User;
+import com.example.Mini.Online.Market.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -4,7 +4,7 @@ import com.example.Mini.Online.Market.cart.domain.CheckoutAddressDTO;
 import com.example.Mini.Online.Market.cart.domain.ProductDTO;
 import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
 import com.example.Mini.Online.Market.cart.service.ShoppingCartService;
-import com.example.Mini.Online.Market.mockfactory.User;
+import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.orders.domain.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

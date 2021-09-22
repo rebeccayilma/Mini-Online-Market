@@ -1,8 +1,7 @@
 package com.example.Mini.Online.Market.orders.service;
 
-import com.example.Mini.Online.Market.mockfactory.User;
+import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.orders.domain.Order;
-import com.example.Mini.Online.Market.orders.domain.OrderStatus;
 
 import java.util.List;
 import java.util.Optional;

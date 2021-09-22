@@ -24,7 +24,7 @@ public class EmailService {
                         "<p>Total Amount: " + order.getAmount() + "</p>" +
                         "<p>Order Status: " + order.getOrderStatus() + "</p>" +
                         "<p>Ordered At: " + order.getCreated_at() + "</p>" +
-                        "<p>Buyer: " + order.getUser().getFirstName() + " " + order.getUser().getLastName() + "</p>" +
+                        "<p>Buyer: " + order.getUser().getName()+"</p>" +
                         "<p>Shipping Address: " + order.getShippingAddress().getStreet() + "," +
                         ", " + order.getShippingAddress().getCity() + ", " +
                         order.getShippingAddress().getState() + "</p>" +
