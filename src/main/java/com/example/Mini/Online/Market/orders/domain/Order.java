@@ -1,6 +1,5 @@
 package com.example.Mini.Online.Market.orders.domain;
 
-import com.example.Mini.Online.Market.cart.domain.CartLine;
 import com.example.Mini.Online.Market.mockfactory.Address;
 import com.example.Mini.Online.Market.mockfactory.User;
 import lombok.AllArgsConstructor;
