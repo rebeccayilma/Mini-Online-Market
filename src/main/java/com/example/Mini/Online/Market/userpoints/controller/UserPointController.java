@@ -1,6 +1,5 @@
 package com.example.Mini.Online.Market.userpoints.controller;
 
-import com.example.Mini.Online.Market.mockfactory.User;
 import com.example.Mini.Online.Market.userpoints.domain.UserPoint;
 import com.example.Mini.Online.Market.userpoints.service.UserPointService;
 import org.springframework.beans.factory.annotation.Autowired;
