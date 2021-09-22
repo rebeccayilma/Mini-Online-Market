@@ -1,5 +1,6 @@
 package com.example.Mini.Online.Market.cart.service;
 
+import com.example.Mini.Online.Market.cart.domain.CartLine;
 import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
 import com.example.Mini.Online.Market.cart.repository.ShoppingCartRepository;
 import com.example.Mini.Online.Market.domain.User;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -40,17 +42,35 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart addToCart(Long productId, int quantity, User user) {
         Optional<ShoppingCart> optionalCart = shoppingCartRepository.findShoppingCartByUser(user);
         Optional<Product> product = productService.getOne(productId);
-
-        if (!productService.isEnoughInStock(productId, quantity)) {
+        ShoppingCart shoppingCart = optionalCart.orElseGet(() -> createCart(user));
+        if (!isStockValid(shoppingCart, product, quantity)) {
             throw new NoSuchElementException("Not enough quantity in stock. Try again");
         } else {
             if (product.isPresent()) {
-                ShoppingCart shoppingCart = optionalCart.orElseGet(() -> createCart(user));
                 shoppingCart.addToCart(product.get(), quantity);
                 return shoppingCartRepository.save(shoppingCart);
             } else {
                 throw new NoSuchElementException("Product not found. Try again");
             }
+        }
+    }
+
+    private boolean isStockValid(ShoppingCart cart, Optional<Product> product, int quantity) {
+        if (product.isPresent()) {
+            CartLine cartLine = null;
+            if (cart.getCartLine() != null) {
+                for (CartLine cLine : cart.getCartLine()) {
+                    if (Objects.equals(cLine.getProduct().getId(), product.get().getId())) {
+                        cartLine = cLine;
+                        break;
+                    }
+                }
+            }
+
+            if (cartLine == null) return false;
+            return productService.isEnoughInStock(product.get().getId(), cartLine.getQuantity() + quantity);
+        } else {
+            return false;
         }
     }
 

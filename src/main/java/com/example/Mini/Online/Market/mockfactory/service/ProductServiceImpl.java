@@ -31,6 +31,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean isEnoughInStock(long id, int quantity) {
         Optional<Product> product = productRepository.findById(id);
-        return product.filter(value -> value.getQuantity() >= quantity).isPresent();
+        System.out.println("*********");
+        System.out.println(product.get());
+        System.out.println(quantity);
+        if (product.isPresent()){
+            return product.get().getQuantity() >= quantity;
+        } else {
+            return false;
+        }
     }
 }
