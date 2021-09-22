@@ -54,7 +54,7 @@ public class UserPointServiceImpl implements UserPointService {
 
     @Override
     public UserPoint getUserPoints(long userId) {
-        User user = mockUser();
+        User user = SecurityHelper.getLoggedInUser();
         Optional<UserPoint> userPointOptional = userPointRepository.findUserPointByUser(user);
         if (userPointOptional.isPresent()){
             return userPointOptional.get();
@@ -66,7 +66,4 @@ public class UserPointServiceImpl implements UserPointService {
         }
     }
 
-    public User mockUser() {
-        return new User(1L, "Johnstone", "Ananda", "johnolwamba@gmail.com");
-    }
 }

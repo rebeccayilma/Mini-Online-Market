@@ -21,21 +21,21 @@ public class CartController {
 
     @GetMapping()
     public ResponseEntity<?> getCart() {
-        User user = mockUser();
+        User user = SecurityHelper.getLoggedInUser();
         Optional<ShoppingCart> cart = shoppingCartService.getCart(user);
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
     @PostMapping(value = "")
     public ResponseEntity<?> addToCart(@RequestBody ProductDTO productDto) {
-        User user = mockUser();
+        User user = SecurityHelper.getLoggedInUser();
         ShoppingCart shoppingCart = shoppingCartService.addToCart(productDto.getId(), productDto.getQuantity(), user);
         return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
     }
 
     @PostMapping("/process/{cartId}")
     public ResponseEntity<?> processPayment(@PathVariable Long cartId) {
-        User user = mockUser();
+        User user = SecurityHelper.getLoggedInUser();
         Order order = shoppingCartService.checkoutCart(cartId, user);
         if (order == null) {
             //please add items to cart before checking out
@@ -49,7 +49,7 @@ public class CartController {
     @PostMapping(value = "/remove/{productId}")
     public ResponseEntity<?> removeFromCart(@PathVariable Long productId) {
         //TODO: Mock user => Should come from the session
-        User user = mockUser();
+        User user = SecurityHelper.getLoggedInUser();
         ShoppingCart shoppingCart = shoppingCartService.removeFromCart(productId, user);
         return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
     }
@@ -57,13 +57,9 @@ public class CartController {
     @PostMapping(value = "/checkout/address")
     public ResponseEntity<?> addAddressToCart(@RequestBody CheckoutAddressDTO addressDTO) {
         //TODO: Mock user => Should come from the session
-        User user = mockUser();
+        User user = SecurityHelper.getLoggedInUser();
         ShoppingCart shoppingCart = shoppingCartService.addAddressToCart(user,
                 addressDTO.getBillingId(), addressDTO.getBillingId());
         return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
-    }
-
-    public User mockUser() {
-        return new User(1L, "Johnstone", "Ananda", "johnolwamba@gmail.com");
     }
 }

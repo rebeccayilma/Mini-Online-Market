@@ -26,7 +26,7 @@ public class OrderController {
 
     @GetMapping("/history")
     public ResponseEntity<?> getOrderHistory() {
-        User user = mockUser();
+        User user = SecurityHelper.getLoggedInUser();
         List<Order> ordersHistory = orderService.getOrderHistory(user);
         return new ResponseEntity<>(ordersHistory, HttpStatus.OK);
     }
@@ -41,9 +41,5 @@ public class OrderController {
     public ResponseEntity<?> updateOrderStatus(@PathVariable long orderId, @RequestBody OrderUpdateDTO orderDTO) {
         Order order = orderService.updateOrderStatus(orderId, orderDTO.getOrderStatus());
         return new ResponseEntity<>(order, HttpStatus.OK);
-    }
-
-    public User mockUser() {
-        return new User(1L, "Johnstone", "Ananda", "johnolwamba@gmail.com");
     }
 }
