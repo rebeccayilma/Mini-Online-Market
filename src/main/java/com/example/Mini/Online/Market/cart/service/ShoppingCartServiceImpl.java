@@ -58,28 +58,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     }
                 }
             }
-
-            if (cartLine == null) {
-                return initializeAddCartFromEmpty(quantity, product, shoppingCart);
-            } else {
-                if (product.get().getQuantity() >= (cartLine.getQuantity() + quantity)) {
-                    shoppingCart.addToCart(product.get(), quantity);
+            if (cartLine != null) {
+                //do quantity check
+                if (product.get().getQuantity() < (cartLine.getQuantity() + quantity)) {
+                    throw new EntityNotFoundException("Product out of stock. Try again");
                 }
-                return shoppingCartRepository.save(shoppingCart);
             }
+            shoppingCart.addToCart(product.get(), quantity);
+            return shoppingCartRepository.save(shoppingCart);
         } else {
             throw new EntityNotFoundException("Product not found. Try again");
         }
-    }
-
-    private ShoppingCart initializeAddCartFromEmpty(int quantity, Optional<Product> product, ShoppingCart shoppingCart) {
-        ArrayList<CartLine> cartLineList = new ArrayList<>();
-        CartLine newCart = new CartLine();
-        newCart.setQuantity(quantity);
-        newCart.setProduct(product.get());
-        cartLineList.add(newCart);
-        shoppingCart.setCartLine(cartLineList);
-        return shoppingCartRepository.save(shoppingCart);
     }
 
     @Override

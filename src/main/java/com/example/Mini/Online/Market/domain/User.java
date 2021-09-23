@@ -38,4 +38,19 @@ public class User {
     List<Order> orders;
     @OneToMany(cascade = CascadeType.ALL)
     List<Address> addresses;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", status=" + status +
+                ", orders=" + orders +
+                ", addresses=" + addresses +
+                '}';
+    }
 }
