@@ -1,6 +1,7 @@
 package com.example.Mini.Online.Market.service;
 
 import com.example.Mini.Online.Market.domain.User;
+import com.example.Mini.Online.Market.domain.UserStatus;
 import com.example.Mini.Online.Market.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -35,8 +36,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        Optional<User> checkUsername = userRepository.findByUsername(user.getUsername());
+        if (checkUsername.isEmpty()){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setStatus(UserStatus.PENDING);
+            userRepository.save(user);
+        }
     }
 
     @Override

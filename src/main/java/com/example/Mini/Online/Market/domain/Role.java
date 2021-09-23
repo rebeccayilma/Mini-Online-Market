@@ -10,14 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Entity
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String name;
+public enum Role {
+    ADMIN,BUYER,SELLER
 }
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Getter
+//@Setter
+//@Entity
+//public class Role {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private long id;
+//    private String name;
+//
+//}
