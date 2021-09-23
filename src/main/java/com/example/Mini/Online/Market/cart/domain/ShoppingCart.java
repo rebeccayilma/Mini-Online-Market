@@ -78,4 +78,15 @@ public class ShoppingCart {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "ShoppingCart{" +
+                "id=" + id +
+                ", user=" + user +
+                ", cartLine=" + cartLine +
+                ", billingAddress=" + billingAddress +
+                ", shippingAddress=" + shippingAddress +
+                '}';
+    }
 }
