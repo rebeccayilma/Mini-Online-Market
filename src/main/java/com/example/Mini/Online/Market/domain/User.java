@@ -1,5 +1,6 @@
 package com.example.Mini.Online.Market.domain;
 
+import com.example.Mini.Online.Market.orders.domain.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,14 +22,20 @@ public class User {
     private long id;
     @NotEmpty
     private String name;
+    @NotEmpty
     private String username;
+    @NotEmpty
     private String password;
+    @NotEmpty
     @Email
     private String email;
-    @OneToOne
+    @NotEmpty
+//    @OneToOne(cascade = CascadeType.ALL)
     private Role role;
+    @NotEmpty
     private UserStatus status;
-//    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-//    List<Order> orders;
-//    List<Adddress> adddresses;
+    @OneToMany(mappedBy ="user",cascade = CascadeType.ALL)
+    List<Order> orders;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Address> addresses;
 }

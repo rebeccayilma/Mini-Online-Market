@@ -1,6 +1,7 @@
 package com.example.Mini.Online.Market.controller;
 
 import com.example.Mini.Online.Market.domain.User;
+import com.example.Mini.Online.Market.domain.UserStatus;
 import com.example.Mini.Online.Market.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,11 @@ public class UserController {
     }
     @PostMapping
     public void saveUser(@RequestBody User user){
+        userService.save(user);
+    }
+    @PutMapping("/{id}")
+    public void approveUser(@PathVariable("id") long id,@RequestBody User user){
+        user.setStatus(UserStatus.APPROVED);
         userService.save(user);
     }
 

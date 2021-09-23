@@ -2,6 +2,7 @@ package com.example.Mini.Online.Market.repository;
 
 import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.domain.UserStatus;
+import com.example.Mini.Online.Market.util.SecurityConstants;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findAll();
@@ -19,9 +21,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findUsersByStatus(UserStatus status);
 
-    @Query("select u from User u where u.role.id =3")
+    @Query("select u from User u where u.role = " + SecurityConstants.ROLE_SELLER)
     List<User> findAllSellers();
 
-    @Query("select u from User u where u.status = 1")
+    @Query("select u from User u where u.status = 1 and u.role = " + SecurityConstants.ROLE_SELLER)
     List<User> findPendingSellers();
 }
