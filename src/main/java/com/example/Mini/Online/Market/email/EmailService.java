@@ -1,7 +1,7 @@
 package com.example.Mini.Online.Market.email;
 
-import com.example.Mini.Online.Market.orders.domain.Order;
-import com.example.Mini.Online.Market.payment.domain.Payment;
+import com.example.Mini.Online.Market.domain.Order;
+import com.example.Mini.Online.Market.domain.Payment;
 import com.sparkpost.Client;
 import com.sparkpost.exception.SparkPostException;
 import org.springframework.scheduling.annotation.Async;
