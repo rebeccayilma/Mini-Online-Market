@@ -19,12 +19,11 @@ public class Product {
     private Double price;
     private Integer quantity;
     private String description;
-
-    //    private Seller seller;
-//
+    //private Seller seller;
 //    private List<Order> orderlist;
-//
-//    private List<Review> review;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Review> review;
 
     @Override
     public String toString() {
