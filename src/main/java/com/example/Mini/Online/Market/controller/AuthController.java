@@ -54,5 +54,4 @@ public class AuthController {
         Optional<User> userOptional = userService.findByUsername(authenticationRequest.getUsername());
         return ResponseEntity.ok(new AuthenticationResponse(jwt, userOptional.orElse(null)));
     }
-
 }

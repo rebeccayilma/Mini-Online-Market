@@ -6,7 +6,6 @@ import com.example.Mini.Online.Market.cart.domain.ProductDTO;
 import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
 import com.example.Mini.Online.Market.cart.service.ShoppingCartService;
 import com.example.Mini.Online.Market.domain.User;
-import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.payment.domain.Payment;
 import com.example.Mini.Online.Market.service.UserService;
 import com.example.Mini.Online.Market.util.exeptionhandler.EntityNotFoundException;
@@ -59,7 +58,6 @@ public class CartController {
                 //please add items to cart before checking out
                 return new ResponseEntity<>("Order could not be completed. Please try again", HttpStatus.NO_CONTENT);
             } else {
-                //TODO: Handle checkout
                 return new ResponseEntity<>(payment, HttpStatus.OK);
             }
         } else {

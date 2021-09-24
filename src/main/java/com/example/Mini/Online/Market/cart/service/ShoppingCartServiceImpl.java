@@ -119,14 +119,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         } else {
             throw new EntityNotFoundException("You do not have an existing cart");
         }
-
-        //TODO:
-        /*
-        -validate payments
-        -create order through adapter => done
-        -send out email to user => done
-        -return order => done
-         */
     }
 
     private Payment processPayment(ProcessPaymentDTO processPaymentDTO, Order savedOrder) {
