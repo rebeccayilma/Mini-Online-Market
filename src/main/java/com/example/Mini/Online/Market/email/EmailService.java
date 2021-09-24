@@ -1,6 +1,7 @@
 package com.example.Mini.Online.Market.email;
 
 import com.example.Mini.Online.Market.orders.domain.Order;
+import com.example.Mini.Online.Market.payment.domain.Payment;
 import com.sparkpost.Client;
 import com.sparkpost.exception.SparkPostException;
 import org.springframework.scheduling.annotation.Async;
@@ -12,22 +13,26 @@ public class EmailService {
     Client client = new Client(API_KEY);
 
     @Async
-    public void orderPlacementEmail(Order order) throws SparkPostException {
+    public void orderPlacementEmail(Payment payment) throws SparkPostException {
         client.sendMessage(
                 "johnolwamba@wrostdevelopers.com",
-                order.getUser().getEmail(),
+                payment.getOrder().getUser().getEmail(),
                 "Thank You For Your Order!.",
                 "We have received your order and it is being processed",
                 "<div>" +
-                        "<p>Order confirmation # " + order.getId() + "</p>" +
+                        "<p>Order confirmation # " + payment.getOrder().getId() + "</p>" +
                         "<p>Details:</p>" +
-                        "<p>Total Amount: " + order.getAmount() + "</p>" +
-                        "<p>Order Status: " + order.getOrderStatus() + "</p>" +
-                        "<p>Ordered At: " + order.getCreated_at() + "</p>" +
-                        "<p>Buyer: " + order.getUser().getName()+"</p>" +
-                        "<p>Shipping Address: " + order.getShippingAddress().getStreet() + "," +
-                        ", " + order.getShippingAddress().getCity() + ", " +
-                        order.getShippingAddress().getState() + "</p>" +
+                        "<p>Total Amount: " + payment.getOrder().getAmount() + "</p>" +
+                        "<p>Order Status: " + payment.getOrder().getOrderStatus() + "</p>" +
+                        "<p>Ordered At: " + payment.getOrder().getCreated_at() + "</p>" +
+                        "<p>Buyer: " + payment.getOrder().getUser().getName()+"</p>" +
+                        "<p>Shipping Address: " + payment.getOrder().getShippingAddress().getStreet() + "," +
+                        ", " + payment.getOrder().getShippingAddress().getCity() + ", " +
+                        payment.getOrder().getShippingAddress().getState() + "</p>" +
+                        "</br>"+
+                        "<p>Payment Details</p>"+
+                        "<p>Transaction Code: " + payment.getTransactionCode() +"</p>"+
+                        "<p>Transaction Type: " + payment.getType()+"</p>"+
                         "</div>");
 
     }

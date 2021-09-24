@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
     public Order updateOrderStatus(long orderId, int orderStatus) {
         Optional<Order> order = orderRepository.findById(orderId);
         if (order.isPresent()) {
-            if (isOrderStatusValid(orderStatus)) {
+            if (isOrderStatusValid(orderStatus, order.get())) {
                 order.get().setOrderStatus(OrderStatus.values()[orderStatus]);
                 if (isOrderDelivered(orderStatus)) {
                     userPointService.incrementPoints(order.get().getUser(), POINTS_AWARDED);
@@ -68,13 +68,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public Boolean isOrderDelivered(int orderStatus) {
-        int ordersLength = OrderStatus.values().length;
-        return orderStatus == ordersLength - 1;
+        return orderStatus == 3;
     }
 
-    public Boolean isOrderStatusValid(int orderStatus) {
+    public Boolean isOrderStatusValid(int orderStatus, Order order) {
         int ordersLength = OrderStatus.values().length;
-        return orderStatus <= ordersLength - 1;
+        if(orderStatus == 4 && order.getOrderStatus() != OrderStatus.PLACED){
+            return false;
+        } else if (orderStatus <= ordersLength - 1){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

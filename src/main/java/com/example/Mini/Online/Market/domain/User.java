@@ -34,8 +34,10 @@ public class User {
     private Role role;
     @NotEmpty
     private UserStatus status;
-    @OneToMany(mappedBy ="user",cascade = CascadeType.ALL)
-    List<Order> orders;
+//
+//    @OneToMany(mappedBy ="user",cascade = CascadeType.ALL)
+//    List<Order> orders;
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     List<Address> addresses;
 
@@ -49,7 +51,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 ", status=" + status +
-                ", orders=" + orders +
                 ", addresses=" + addresses +
                 '}';
     }

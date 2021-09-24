@@ -1,5 +1,6 @@
 package com.example.Mini.Online.Market.orders.controller;
 
+import com.example.Mini.Online.Market.domain.Role;
 import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.orders.domain.OrderUpdateDTO;
@@ -11,12 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
-@CrossOrigin(origins = { "http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class OrderController {
 
     @Autowired
@@ -40,7 +42,14 @@ public class OrderController {
     public ResponseEntity<?> getOrderHistory(Authentication authentication) {
         Optional<User> userOptional = userService.getAuthenticatedUser(authentication);
         if (userOptional.isPresent()) {
-            List<Order> ordersHistory = orderService.getOrderHistory(userOptional.get());
+            List<Order> ordersHistory = null;
+            if (userOptional.get().getRole() == Role.BUYER) {
+                //get buyers only
+                ordersHistory = orderService.getOrderHistory(userOptional.get());
+            } else {
+                //fetch all
+                ordersHistory = orderService.getAllOrders();
+            }
             return new ResponseEntity<>(ordersHistory, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("User not authorized", HttpStatus.UNAUTHORIZED);
@@ -48,7 +57,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<?> getOrderById(@PathVariable long orderId,Authentication authentication) {
+    public ResponseEntity<?> getOrderById(@PathVariable long orderId, Authentication authentication) {
         Optional<User> userOptional = userService.getAuthenticatedUser(authentication);
         if (userOptional.isPresent()) {
             Optional<Order> order = orderService.getOne(orderId);
