@@ -16,26 +16,26 @@ public class MiniOnlineMarketApplication {
 		SpringApplication.run(MiniOnlineMarketApplication.class, args);
 	}
 
-//	@Bean
-//	CorsConfigurationSource corsConfigurationSource() {
-//		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//		CorsConfiguration config = new CorsConfiguration();
-//		config.addAllowedHeader("*");
-//		config.addAllowedMethod("*");
-//		config.addAllowedOrigin("*");
-//		config.setAllowCredentials(true);
-//		source.registerCorsConfiguration("/**", config);
-//		return source;
-//	}
-
 	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("*").allowedOrigins("*").allowedHeaders("*");
-			}
-		};
+	CorsConfigurationSource corsConfigurationSource() {
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+		config.addAllowedOrigin("*");
+		config.setAllowCredentials(true);
+		source.registerCorsConfiguration("/**", config);
+		return source;
 	}
+
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurer() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("*").allowedOrigins("*").allowedHeaders("*");
+//			}
+//		};
+//	}
 
 }

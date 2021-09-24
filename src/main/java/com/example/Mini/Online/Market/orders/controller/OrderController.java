@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
-@CrossOrigin(origins = { "http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class OrderController {
 
     @Autowired
@@ -48,7 +48,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<?> getOrderById(@PathVariable long orderId,Authentication authentication) {
+    public ResponseEntity<?> getOrderById(@PathVariable long orderId, Authentication authentication) {
         Optional<User> userOptional = userService.getAuthenticatedUser(authentication);
         if (userOptional.isPresent()) {
             Optional<Order> order = orderService.getOne(orderId);

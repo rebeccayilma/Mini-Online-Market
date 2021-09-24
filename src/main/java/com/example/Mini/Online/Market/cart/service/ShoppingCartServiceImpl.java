@@ -1,6 +1,7 @@
 package com.example.Mini.Online.Market.cart.service;
 
 import com.example.Mini.Online.Market.cart.domain.CartLine;
+import com.example.Mini.Online.Market.cart.domain.ProcessPaymentDTO;
 import com.example.Mini.Online.Market.cart.domain.ShoppingCart;
 import com.example.Mini.Online.Market.cart.repository.ShoppingCartRepository;
 import com.example.Mini.Online.Market.domain.Address;
@@ -10,6 +11,8 @@ import com.example.Mini.Online.Market.email.EmailService;
 import com.example.Mini.Online.Market.orders.domain.Order;
 import com.example.Mini.Online.Market.orders.domain.OrderAdapter;
 import com.example.Mini.Online.Market.orders.service.OrderService;
+import com.example.Mini.Online.Market.payment.domain.Payment;
+import com.example.Mini.Online.Market.payment.service.PaymentService;
 import com.example.Mini.Online.Market.service.AddressService;
 import com.example.Mini.Online.Market.service.ProductService;
 import com.example.Mini.Online.Market.util.exeptionhandler.EntityNotFoundException;
@@ -17,7 +20,7 @@ import com.sparkpost.exception.SparkPostException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.sql.Date;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,6 +41,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    PaymentService paymentService;
 
     @Override
     public ShoppingCart addToCart(Long productId, int quantity, User user) {
@@ -100,9 +106,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public Order checkoutCart(Long cartId, User user) {
-
-        Optional<ShoppingCart> shoppingCart = shoppingCartRepository.findById(cartId);
+    public Payment checkoutCart(ProcessPaymentDTO processPaymentDTO, User user) {
+        Optional<ShoppingCart> shoppingCart = shoppingCartRepository.findShoppingCartByUser(user);
+        if (shoppingCart.isPresent()) {
+            processAddress(processPaymentDTO, shoppingCart);
+            //create and save order
+            Order order = OrderAdapter.parseCartToOrder(shoppingCart.get());
+            Order savedOrder = orderService.save(order);
+            //process payments
+            return processPayment(processPaymentDTO, savedOrder);
+        } else {
+            throw new EntityNotFoundException("You do not have an existing cart");
+        }
 
         //TODO:
         /*
@@ -111,21 +126,34 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         -send out email to user => done
         -return order => done
          */
-
-
-        if (shoppingCart.isPresent()) {
-            Order order = OrderAdapter.parseCartToOrder(shoppingCart.get());
-            orderService.save(order);
-            sendEmail(order);
-            return order;
-        } else {
-            throw new EntityNotFoundException("Cart ID not found. Try again");
-        }
     }
 
-    private void sendEmail(Order order) {
+    private Payment processPayment(ProcessPaymentDTO processPaymentDTO, Order savedOrder) {
+        Payment payment = new Payment();
+        payment.setCreated_at(new Date(System.currentTimeMillis()));
+        payment.setOrder(savedOrder);
+        payment.setType(processPaymentDTO.getType());
+        payment.setTransactionCode(processPaymentDTO.getTransactionCode());
+        paymentService.save(payment);
+
+        sendEmail(payment);
+        return payment;
+    }
+
+    private void processAddress(ProcessPaymentDTO processPaymentDTO, Optional<ShoppingCart> shoppingCart) {
+        Address address = new Address();
+        address.setCity(processPaymentDTO.getAddressCity());
+        address.setState(processPaymentDTO.getAddressState());
+        address.setStreet(processPaymentDTO.getAddressZip());
+
+        shoppingCart.get().setBillingAddress(address);
+        shoppingCart.get().setShippingAddress(address);
+        shoppingCartRepository.save(shoppingCart.get());
+    }
+
+    private void sendEmail(Payment payment) {
         try {
-            emailService.orderPlacementEmail(order);
+            emailService.orderPlacementEmail(payment);
         } catch (SparkPostException ex) {
             System.out.println(ex);
         }
