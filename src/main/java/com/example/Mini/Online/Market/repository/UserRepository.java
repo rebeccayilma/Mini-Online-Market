@@ -1,5 +1,6 @@
 package com.example.Mini.Online.Market.repository;
 
+import com.example.Mini.Online.Market.domain.Address;
 import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.domain.UserStatus;
 import com.example.Mini.Online.Market.util.SecurityConstants;
@@ -20,6 +21,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByUsername(String s);
 
     List<User> findUsersByStatus(UserStatus status);
+
+    @Query("select a from Address a where a.user.username=:username")
+    List<Address> findAddresses(String username);
 
     @Query("select u from User u where u.role = " + SecurityConstants.ROLE_SELLER)
     List<User> findAllSellers();
