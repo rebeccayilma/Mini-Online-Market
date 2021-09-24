@@ -38,7 +38,7 @@ public class User {
 //    @OneToMany(mappedBy ="user",cascade = CascadeType.ALL)
 //    List<Order> orders;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     List<Address> addresses;
 
     @Override

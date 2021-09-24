@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Service
 @EnableWebSecurity
-@CrossOrigin
+@CrossOrigin(origins = {"*"})
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyUserDetailsService myUserDetailsService;

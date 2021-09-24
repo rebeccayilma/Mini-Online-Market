@@ -1,6 +1,7 @@
 package com.example.Mini.Online.Market.service;
 
 import com.example.Mini.Online.Market.domain.Product;
+import com.example.Mini.Online.Market.domain.Review;
 import com.example.Mini.Online.Market.repository.ProductRepository;
 import com.example.Mini.Online.Market.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,11 @@ public class ProductServiceImpl implements ProductService{
         } else {
             return false;
         }
+    }
+
+    @Override
+    public List<Review> getProductReview(long id) {
+        return productRepository.findALLReviews(id);
     }
 
 //    @Override

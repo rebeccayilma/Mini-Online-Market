@@ -113,6 +113,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             //create and save order
             Order order = OrderAdapter.parseCartToOrder(shoppingCart.get());
             Order savedOrder = orderService.save(order);
+            shoppingCartRepository.delete(shoppingCart.get());
             //process payments
             return processPayment(processPaymentDTO, savedOrder);
         } else {

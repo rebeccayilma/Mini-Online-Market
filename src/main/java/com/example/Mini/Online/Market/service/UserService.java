@@ -1,6 +1,7 @@
 package com.example.Mini.Online.Market.service;
 
 
+import com.example.Mini.Online.Market.domain.Address;
 import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.domain.UserStatus;
 import org.springframework.security.core.Authentication;
@@ -14,6 +15,7 @@ public interface UserService {
     void save(User user);
     List<User> getByStatus();
     List<User> getSellers();
+    List<Address> getUserAddress(String id);
     Optional<User> findByUsername(String s);
     Optional<User> getAuthenticatedUser(Authentication authentication);
 }

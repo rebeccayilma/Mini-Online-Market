@@ -1,5 +1,6 @@
 package com.example.Mini.Online.Market.service;
 
+import com.example.Mini.Online.Market.domain.Address;
 import com.example.Mini.Online.Market.domain.User;
 import com.example.Mini.Online.Market.domain.UserStatus;
 import com.example.Mini.Online.Market.repository.UserRepository;
@@ -53,6 +54,12 @@ public class UserServiceImpl implements UserService{
     public List<User> getSellers() {
         return userRepository.findAllSellers();
     }
+
+    @Override
+    public List<Address> getUserAddress(String id) {
+        return userRepository.findAddresses(id);
+    }
+
 
     @Override
     public Optional<User> findByUsername(String s) {

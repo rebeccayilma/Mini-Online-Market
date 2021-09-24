@@ -1,6 +1,7 @@
 package com.example.Mini.Online.Market.service;
 
 import com.example.Mini.Online.Market.domain.Product;
+import com.example.Mini.Online.Market.domain.Review;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,8 @@ public interface ProductService {
     public Product update(Product product);
     public void deleteById(long id);
     public boolean isEnoughInStock(long id, int quantity);
+
+    List<Review> getProductReview(long id);
 //    public List<Review> getProductReview(long id);
 //    public List<Order> getProductOder(long id);
 
