@@ -36,7 +36,7 @@ public class User {
     private UserStatus status;
     @OneToMany(mappedBy ="user",cascade = CascadeType.ALL)
     List<Order> orders;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     List<Address> addresses;
 
     @Override
