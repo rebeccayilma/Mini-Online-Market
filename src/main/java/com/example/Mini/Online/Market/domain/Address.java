@@ -1,5 +1,6 @@
 package com.example.Mini.Online.Market.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,8 @@ public class Address {
     private String street;
     private String city;
     private String state;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
     private User user;
 
     @Override
