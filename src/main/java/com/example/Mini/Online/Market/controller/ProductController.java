@@ -1,6 +1,7 @@
 package com.example.Mini.Online.Market.controller;
 
 import com.example.Mini.Online.Market.domain.Product;
+import com.example.Mini.Online.Market.domain.Review;
 import com.example.Mini.Online.Market.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000"})
+@CrossOrigin(origins = { "*"})
 @RequestMapping("/products")
 public class ProductController {
 
@@ -42,8 +43,8 @@ public class ProductController {
         productService.deleteById(id);
     }
 
-//    @GetMapping("/{id}/reviews")
-//    public List<Review> getReviewsOfProduct(@PathVariable long id){
-//        return productService.getProductReview(id);
-//    }
+    @GetMapping("/{id}/reviews")
+    public List<Review> getReviewsOfProduct(@PathVariable long id){
+        return productService.getProductReview(id);
+    }
 }
